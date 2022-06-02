@@ -30,6 +30,9 @@ const todoList = [{
 
 }];
 
+function render (){
+  
+
 for (let i = 0; i < todoList.length; i += 1) {
   const div = document.createElement('div');
 
@@ -45,3 +48,5 @@ for (let i = 0; i < todoList.length; i += 1) {
   div.classList.add('listItems');
   cont.appendChild(div);
 }
+}
+render();
