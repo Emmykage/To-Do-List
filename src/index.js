@@ -8,24 +8,24 @@ const cont = document.querySelector('.small-container');
 
 const todoList = [{
   index: '1',
-  list: 'wash the car',
+  description: 'wash the car',
   completed: false,
 
 }, {
   index: '2',
-  list: 'take out the trash',
+  description: 'take out the trash',
   completed: false,
 
 },
 {
   index: '3',
-  list: 'get some javascript done',
+  description: 'get some javascript done',
   completed: true,
 
 },
 {
   index: '4',
-  list: 'do the dishes',
+  description: 'do the dishes',
   completed: false,
 
 }];
@@ -36,7 +36,7 @@ for (let i = 0; i < todoList.length; i += 1) {
   div.innerHTML = `
             <div class ="checkclass">
             <input class= "checklist" type="checkbox" id="${todoList[i].index}">
-            <label for="${todoList[i].index}">${todoList[i].list}</label>
+            <label for="${todoList[i].index}">${todoList[i].description}</label>
             </div>
            
            <i class="del-btn fa-solid fa-ellipsis-vertical">...</i> 
