@@ -36,14 +36,19 @@ function addListTask(description){
     console.log(description)
     return newTask;
 }
-function removeStorage(){
+function removeStorage(e){
+
     getListTask();
-    const listId = +e.target.id.slice(5);
+
+    const listId = parseInt(e.target.id);
+    
     const filteredList = listarr.filter((task)=>task.index !==listId);
+    localStorage.setItem('listItem', JSON.stringify(filteredList))
     for (let i = 0; i < filteredList.length; i +=1){
         filteredList[i].index = i +1
     }
-    saveTask(filteredList)
+    // saveTask(filteredList)
+    console.log(listId);
 }
 // ----------------------end storage-----------------------
 
@@ -53,16 +58,36 @@ function displayitems(chores){
 div.innerHTML = `
 <div class ="checkclass">
 <button class= "checkbox" id="check${chores.index}" type="checkbox"></button>
-<input type="text" id="list${chores.index}" class="class-input" value="${chores.description}" readonly>
+<input type="text" id="${chores.index}" class="class-input" value="${chores.description}" readonly>
 </div>
 <div>
-<button class="edit">edit</button><button id="btn-id-${chores.index}" class="del-btn"> del</button> <button  class="fa-solid fa-ellipsis-vertical"></button> </div>
+<button class="edit">edit</button><button id="${chores.index}" class="del-btn"> del</button> <button  class="fa-solid fa-ellipsis-vertical"></button> </div>
 
 
 `;
 div.classList.add("listItems");
-cont.appendChild(div);
+cont.appendChild(div); 
 
+
+const inputID = document.getElementById(chores.idex);
+inputID.addEventListener('keypress' ,(e)=>{
+    e.preventDefault();
+    if(e.code === 'Enter'){
+
+        
+  const newDescription = e.target.value;
+  const index = e.target.id;
+  const todos = getListTask();
+
+  const todoItem = todos.find((todo) => todo.index === index);
+  todoItem.description = e.target.value;
+  todos[index - 1] = todoItem;
+  localStorage.setItem('listItem', JSON.stringify(todos))
+
+    }
+ 
+    
+})
 
 const checkbox = document.querySelector(`#check${chores.index}`);
 checkbox.addEventListener('click', function(e){
@@ -80,21 +105,21 @@ checkbox.addEventListener('click', function(e){
    }
 })
  
-div.addEventListener('click', function(e){
-if(e.target.classList.contains('edit')){
-    // console.log('it contains');
-    // e.target.parentNode.parentNode.children[1].removeAttribute('readonly');
-    let inputEdit = e.target.parentNode.parentNode.children[0].children[1];
-    inputEdit.toggleAttribute('readonly') ;
-    if (!inputEdit.hasAttribute('readonly')){
-        e.target.innerHTML = "save";
-    }
-    else{
-        e.target.innerHTML = "edit"
+// div.addEventListener('click', function(e){
+// if(e.target.classList.contains('edit')){
+//     // console.log('it contains');
+//     // e.target.parentNode.parentNode.children[1].removeAttribute('readonly');
+//     let inputEdit = e.target.parentNode.parentNode.children[0].children[1];
+//     inputEdit.toggleAttribute('readonly') ;
+//     if (!inputEdit.hasAttribute('readonly')){
+//         e.target.innerHTML = "save";
+//     }
+//     else{
+//         e.target.innerHTML = "edit"
 
-    }
-}
-})
+//     }
+// }
+// })
 
 }
 // remove item function
@@ -134,6 +159,7 @@ if(storageAvailable('localStorage')){
 
 cont.addEventListener("click", function(e){
     removelist(e.target);
+    removeStorage(e);
     // console.log("delete");
 })
 
