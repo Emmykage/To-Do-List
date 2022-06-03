@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   height: 46px;
+  flex: 4;
 }
 
 .listItems {
