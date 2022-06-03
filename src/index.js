@@ -52,21 +52,37 @@ function displayitems(chores){
     const div = document.createElement("div");
 div.innerHTML = `
 <div class ="checkclass">
-<input class= "checklist" type="checkbox" id="inputId${chores.index}">
-<input type="text" class="class-input" value="${chores.description}" readonly>
+<button class= "checkbox" id="check${chores.index}" type="checkbox"></button>
+<input type="text" id="list${chores.index}" class="class-input" value="${chores.description}" readonly>
 </div>
 <div>
-<button class="edit">edit</button><button class="del-btn"> del</button> <button id="btn-id-${chores.index} class="fa-solid fa-ellipsis-vertical">del</button> </div>
+<button class="edit">edit</button><button id="btn-id-${chores.index}" class="del-btn"> del</button> <button  class="fa-solid fa-ellipsis-vertical"></button> </div>
 
 
 `;
-
 div.classList.add("listItems");
 cont.appendChild(div);
+
+
+const checkbox = document.querySelector(`#check${chores.index}`);
+checkbox.addEventListener('click', function(e){
+//    const btnindex = e.target.id.slice(5);
+   const btnmsg = document.querySelector(`#list${chores.index}`)
+   if(e.target.textContent === '\u2714'){
+       
+       e.target.textContent= ' ';
+        btnmsg.classList.remove('crossinput')
+       
+   }else{
+    e.target.textContent= '\u2714';
+    btnmsg.classList.add('crossinput');
+
+   }
+})
  
 div.addEventListener('click', function(e){
 if(e.target.classList.contains('edit')){
-    console.log('it contains');
+    // console.log('it contains');
     // e.target.parentNode.parentNode.children[1].removeAttribute('readonly');
     let inputEdit = e.target.parentNode.parentNode.children[0].children[1];
     inputEdit.toggleAttribute('readonly') ;
