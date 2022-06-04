@@ -167,10 +167,7 @@ clrBtn.addEventListener('click', ()=>{
         }
         return item;
       });
-  
-
-
-    localStorage.setItem('listItem', JSON.stringify(deletedLocalData))
+      localStorage.setItem('listItem', JSON.stringify(deletedLocalData))
 
     
 })
