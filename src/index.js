@@ -160,6 +160,18 @@ clrBtn.addEventListener('click', ()=>{
         checkbox.parentNode.parentNode.remove();
 
     }
+    const localData = JSON.parse(localStorage.getItem('listItem'));
+    const deletedLocalData = localData.filter((item) => {
+        if (item.completed) {
+          return null;
+        }
+        return item;
+      });
+  
+
+
+    localStorage.setItem('listItem', JSON.stringify(deletedLocalData))
+
     
 })
 
