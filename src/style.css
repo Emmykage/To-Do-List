@@ -18,12 +18,16 @@
 .small-container {
   box-sizing: border-box;
 }
+.activebg{
+  background-color: bisque;
+}
 
 .checkclass {
   display: flex;
   align-items: center;
   height: 46px;
-  flex: 4;
+  width: 100%;
+  flex: 2;
 }
 .checkbox{
   width: 24px;
@@ -35,9 +39,30 @@ align-items: center;
 font-size: 28px;
 
 }
+.del-btn{
+width: 28px;
+height: 28px;
+text-align: center;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.del-display {
+  display: none;
+}
+.edit-display{
+  display: none;
+}
+.trashIcon, .delIcon{
+  font-size: 14px;
+  width: 8px;
+
+}
+
 .crossinput{
   text-decoration: line-through;
 }
+
 
 .listItems {
   display: flex;
@@ -60,7 +85,8 @@ input[type="text"] {
   height: 40px;
   font-style: italic;
   border: none;
-  outline: none;
+  /* outline: none; */
+  background: transparent;
 }
 
 

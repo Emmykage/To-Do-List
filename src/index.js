@@ -48,8 +48,14 @@ function removeStorage(e){
         filteredList[i].index = i +1
     }
     // saveTask(filteredList)
-    console.log(listId);
+    // console.log(listId);
 }
+
+const setTaskDescription = (taskId, newDescription) => {
+    const taskToUpdate = listarr.find(task => task.index === taskId);
+    taskToUpdate.description = newDescription;
+    }
+    
 // ----------------------end storage-----------------------
 
 
@@ -57,54 +63,93 @@ function displayitems(chores){
     const div = document.createElement("div");
 div.innerHTML = `
 <div class ="checkclass">
-<button class= "checkbox" id="check${chores.index}" type="checkbox"></button>
-<input type="text" id="${chores.index}" class="class-input" value="${chores.description}" readonly>
+<button class= "checkbox" id="check${chores.index}"></button>
+<input type="text" id="${chores.index}" class="class-input inputBox${chores.index}" value="${chores.description}" readonly>
 </div>
 <div>
-<button class="edit">edit</button><button id="${chores.index}" class="del-btn"> del</button> <button  class="fa-solid fa-ellipsis-vertical"></button> </div>
+<button class="del-btn del-btn-${chores.index} del-display" id="trash-${chores.index}"><i  class="delIcon fa-solid fa-trash-can"></i></button>
+<span class="edit-btn editbtn${chores.index} "><i id="edit-id" class=" trashIcon fa-solid fa-ellipsis-vertical"></i></span>
+ </div>
 
 
 `;
 div.classList.add("listItems");
 cont.appendChild(div); 
+// -------------------------table buttons-------------------------
+ const editBtn = document.querySelector(`.editbtn${chores.index}`);
+ const divInput = document.querySelector(`.inputBox${chores.index}`)
+ const trashCan = document.querySelector(`.del-btn-${chores.index}`);
 
 
-const inputID = document.getElementById(chores.idex);
-inputID.addEventListener('keypress' ,(e)=>{
-    e.preventDefault();
-    if(e.code === 'Enter'){
+//  ------------------edit---------------
+// const inputID = document.getElementById(chores.idex);
+// inputID.addEventListener('keypress' ,(e)=>{
+//     e.preventDefault();
+//     if(e.code === 'Enter'){
 
         
-  const newDescription = e.target.value;
-  const index = e.target.id;
-  const todos = getListTask();
+//   const newDescription = e.target.value;
+//   const index = e.target.id;
+//   const todos = getListTask();
 
-  const todoItem = todos.find((todo) => todo.index === index);
-  todoItem.description = e.target.value;
-  todos[index - 1] = todoItem;
-  localStorage.setItem('listItem', JSON.stringify(todos))
+//   const todoItem = todos.find((todo) => todo.index === index);
+//   todoItem.description = e.target.value;
+//   todos[index - 1] = todoItem;
+//   localStorage.setItem('listItem', JSON.stringify(todos))
 
-    }
+//     }
  
     
-})
-
+// })
+// -----------------------end edit tryout ---------------------
 const checkbox = document.querySelector(`#check${chores.index}`);
 checkbox.addEventListener('click', function(e){
 //    const btnindex = e.target.id.slice(5);
-   const btnmsg = document.querySelector(`#list${chores.index}`)
+   editBtn.classList.toggle('edit-display');
+   trashCan.classList.toggle('del-display');
+
    if(e.target.textContent === '\u2714'){
        
        e.target.textContent= ' ';
-        btnmsg.classList.remove('crossinput')
+       divInput.classList.remove('crossinput')
        
    }else{
     e.target.textContent= '\u2714';
-    btnmsg.classList.add('crossinput');
+    divInput.classList.add('crossinput');
 
    }
 })
- 
+editBtn.addEventListener('click',()=>{
+    if(divInput.hasAttribute('readonly', true)){
+        divInput.parentElement.parentElement.classList.add('activebg');
+        divInput.removeAttribute('readonly');
+        divInput.addEventListener('keypress', (e)=>{
+
+                 if(e.key === 'Enter'){
+                    console.log("attribute removed")
+                    divInput.removeAttribute('readonly');
+                    divInput.parentElement.parentElement.classList.remove('activebg');
+
+                    const localData = JSON.parse(localStorage.getItem('listItem'));
+                    console.log(divInput.value, chores.index)
+                    localData[chores.index].description = divInput.value;
+                    localStorage.setItem('listItem', JSON.stringify(localData))
+                    divInput.removeAttribute('readonly');
+                
+                            
+            }
+        })
+        console.log("yea")
+    }
+    else{
+        divInput.setAttribute('readonly', true)
+        console.log("attribute removed");
+
+    }
+   
+        
+} )
+//  ------------------------------add edit -------------------------
 // div.addEventListener('click', function(e){
 // if(e.target.classList.contains('edit')){
 //     // console.log('it contains');
@@ -121,11 +166,18 @@ checkbox.addEventListener('click', function(e){
 // }
 // })
 
+// -----------------------edd edit----------------------------------
+
 }
 // remove item function
 function removelist(target){
+    
 if(target.classList.contains("del-btn")){
+
+    console.log('second hey')
+
     target.parentNode.parentNode.remove();
+    
 
 }
 // else if(target.classList.contains("edit"))
@@ -146,7 +198,7 @@ if(storageAvailable('localStorage')){
         e.preventDefault();
 
        
-            const input = document.getElementById("todo").value;
+         const input = document.getElementById("todo").value;
         const anotherTask = addListTask(input);
         displayitems(anotherTask)
         saveStorage();
@@ -160,6 +212,5 @@ if(storageAvailable('localStorage')){
 cont.addEventListener("click", function(e){
     removelist(e.target);
     removeStorage(e);
-    // console.log("delete");
 })
 
