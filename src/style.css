@@ -18,7 +18,8 @@
 .small-container {
   box-sizing: border-box;
 }
-.activebg{
+
+.activebg {
   background-color: bisque;
 }
 
@@ -29,40 +30,43 @@
   width: 100%;
   flex: 2;
 }
-.checkbox{
+
+.checkbox {
   width: 24px;
   height: 24px;
-  padding: 0px;
+  padding: 0;
   color: rgb(0, 69, 0);
-display: flex;  
-align-items: center;
-font-size: 28px;
+  display: flex;
+  align-items: center;
+  font-size: 28px;
+}
 
+.del-btn {
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.del-btn{
-width: 28px;
-height: 28px;
-text-align: center;
-display: flex;
-align-items: center;
-justify-content: center;
-}
+
 .del-display {
   display: none;
 }
-.edit-display{
+
+.edit-display {
   display: none;
 }
-.trashIcon, .delIcon{
+
+.trashIcon,
+.delIcon {
   font-size: 14px;
   width: 8px;
-
 }
 
-.crossinput{
+.crossinput {
   text-decoration: line-through;
 }
-
 
 .listItems {
   display: flex;
@@ -88,7 +92,6 @@ input[type="text"] {
   outline: none;
   background: transparent;
 }
-
 
 input[type="checkbox"]:checked + label {
   text-decoration: line-through;
