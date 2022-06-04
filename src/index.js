@@ -1,61 +1,17 @@
 /* eslint-disable */
 import '@fortawesome/fontawesome-free/js/all.js';
 import './style.css';
-import storageAvailable from '../module/storageAvailable';
+import storageAvailable from '../module/storageAvailable.js';
+import { listarr, getListTask, saveStorage, addListTask, removeStorage} from '../module/storagefunction.js';
+// import { cont, displayitems} from '../module/displayitems.js';
 
 
-
+export const cont = document.querySelector(".small-container");
+const clrBtn = document.querySelector(".clear");
 
 const form = document.querySelector("form");
-const cont = document.querySelector(".small-container");
-const clrBtn = document.querySelector(".clear");
-// const inputbtn =document.querySelector('.listItems');
 
 
-class ListToDo{
-    constructor(description=null, index = null,  completed = false){
-        this.description = description;
-        this.completed = completed;
-        this.index = index;
-
-    }
-}
-// replace with taskList
-let listarr = [];
-
-function getListTask(){
-     listarr = JSON.parse(localStorage.getItem('listItem')) || [];
-    return listarr;
-}
-function saveStorage(data = listarr){
-    localStorage.setItem('listItem', JSON.stringify(data))
-}
-function addListTask(description){
-    let listId = listarr.length + 1;
-    let newTask = new ListToDo(description, listId );
-    listarr.push(newTask);
-    console.log(description)
-    return newTask;
-}
-function removeStorage(e){
-
-    getListTask();
-
-    const listId = parseInt(e.target.id.slice(6));    
-    
-   
-        const filteredList = listarr.filter((task)=>task.index !==listId);
-        for (let i = 0; i < filteredList.length; i +=1){
-            filteredList[i].index = i +1
-        }
-        localStorage.setItem('listItem', JSON.stringify(filteredList))
-
-    
-    
-   
-    // saveTask(filteredList)
-    // console.log(listId);
-}
 
 
 function displayitems(chores){
@@ -181,11 +137,6 @@ if(target.classList.contains("del-btn")){
     
 
 }
-// else if(target.classList.contains("edit"))
-// {   
-//     // inputfield.removeAttribute("readonly")
-//             console.log(document.className);
-//     }
 
 }
 // add item function/
@@ -216,56 +167,3 @@ cont.addEventListener("click", function(e){
     removelist(e.target);
     removeStorage(e);
 })
-
-
-//  ------------------------------add edit -------------------------
-// div.addEventListener('click', function(e){
-// if(e.target.classList.contains('edit')){
-//     // console.log('it contains');
-//     // e.target.parentNode.parentNode.children[1].removeAttribute('readonly');
-//     let inputEdit = e.target.parentNode.parentNode.children[0].children[1];
-//     inputEdit.toggleAttribute('readonly') ;
-//     if (!inputEdit.hasAttribute('readonly')){
-//         e.target.innerHTML = "save";
-//     }
-//     else{
-//         e.target.innerHTML = "edit"
-
-//     }
-// }
-// })
-
-// -----------------------edd edit----------------------------------
-
-
-//  ------------------edit---------------
-// const inputID = document.getElementById(chores.idex);
-// inputID.addEventListener('keypress' ,(e)=>{
-//     e.preventDefault();
-//     if(e.code === 'Enter'){
-
-        
-//   const newDescription = e.target.value;
-//   const index = e.target.id;
-//   const todos = getListTask();
-
-//   const todoItem = todos.find((todo) => todo.index === index);
-//   todoItem.description = e.target.value;
-//   todos[index - 1] = todoItem;
-//   localStorage.setItem('listItem', JSON.stringify(todos))
-
-//     }
- 
-    
-// })
-// -----------------------end edit tryout ---------------------
-
-// console.log(chores.completed = true );
-
-
-// const setTaskDescription = (taskId, newDescription) => {
-//     const taskToUpdate = listarr.find(task => task.index === taskId);
-//     taskToUpdate.description = newDescription;
-//     }
-    
-// // ----------------------end storage-----------------------
