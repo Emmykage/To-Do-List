@@ -85,7 +85,7 @@ input[type="text"] {
   height: 40px;
   font-style: italic;
   border: none;
-  /* outline: none; */
+  outline: none;
   background: transparent;
 }
 

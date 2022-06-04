@@ -8,6 +8,7 @@ import storageAvailable from '../module/storageAvailable';
 
 const form = document.querySelector("form");
 const cont = document.querySelector(".small-container");
+const clrBtn = document.querySelector(".clear");
 // const inputbtn =document.querySelector('.listItems');
 
 
@@ -40,13 +41,18 @@ function removeStorage(e){
 
     getListTask();
 
-    const listId = parseInt(e.target.id);
+    const listId = parseInt(e.target.id.slice(6));    
     
-    const filteredList = listarr.filter((task)=>task.index !==listId);
-    localStorage.setItem('listItem', JSON.stringify(filteredList))
-    for (let i = 0; i < filteredList.length; i +=1){
-        filteredList[i].index = i +1
-    }
+   
+        const filteredList = listarr.filter((task)=>task.index !==listId);
+        for (let i = 0; i < filteredList.length; i +=1){
+            filteredList[i].index = i +1
+        }
+        localStorage.setItem('listItem', JSON.stringify(filteredList))
+
+    
+    
+   
     // saveTask(filteredList)
     // console.log(listId);
 }
@@ -81,28 +87,12 @@ cont.appendChild(div);
  const trashCan = document.querySelector(`.del-btn-${chores.index}`);
 
 
-//  ------------------edit---------------
-// const inputID = document.getElementById(chores.idex);
-// inputID.addEventListener('keypress' ,(e)=>{
-//     e.preventDefault();
-//     if(e.code === 'Enter'){
 
-        
-//   const newDescription = e.target.value;
-//   const index = e.target.id;
-//   const todos = getListTask();
 
-//   const todoItem = todos.find((todo) => todo.index === index);
-//   todoItem.description = e.target.value;
-//   todos[index - 1] = todoItem;
-//   localStorage.setItem('listItem', JSON.stringify(todos))
-
-//     }
- 
-    
-// })
-// -----------------------end edit tryout ---------------------
 const checkbox = document.querySelector(`#check${chores.index}`);
+if(checkbox.textContent === '\u2714'){
+    checkbox.nextElementSibling.classList.add('crossinput');
+}
 checkbox.addEventListener('click', function(e){
 //    const btnindex = e.target.id.slice(5);
    editBtn.classList.toggle('edit-display');
@@ -111,12 +101,23 @@ checkbox.addEventListener('click', function(e){
    if(e.target.textContent === '\u2714'){
        
        e.target.textContent= ' ';
-       divInput.classList.remove('crossinput')
+       divInput.classList.remove('crossinput');
+       chores.completed = false;
+       const localData = JSON.parse(localStorage.getItem('listItem'));
+       localData[chores.index].completed = false;
+       localStorage.setItem('listItem', JSON.stringify(localData));
+     
+       console.log(chores.completed)
        
    }else{
     e.target.textContent= '\u2714';
     divInput.classList.add('crossinput');
+    chores.completed = true;
+    const localData = JSON.parse(localStorage.getItem('listItem'));
+    localData[chores.index].completed = true;
+    localStorage.setItem('listItem', JSON.stringify(localData))
 
+    console.log(chores.completed)
    }
 })
 editBtn.addEventListener('click',()=>{
@@ -149,30 +150,28 @@ editBtn.addEventListener('click',()=>{
    
         
 } )
-//  ------------------------------add edit -------------------------
-// div.addEventListener('click', function(e){
-// if(e.target.classList.contains('edit')){
-//     // console.log('it contains');
-//     // e.target.parentNode.parentNode.children[1].removeAttribute('readonly');
-//     let inputEdit = e.target.parentNode.parentNode.children[0].children[1];
-//     inputEdit.toggleAttribute('readonly') ;
-//     if (!inputEdit.hasAttribute('readonly')){
-//         e.target.innerHTML = "save";
-//     }
-//     else{
-//         e.target.innerHTML = "edit"
 
-//     }
-// }
-// })
+// -------------------------clear btn-----------------
 
-// -----------------------edd edit----------------------------------
+clrBtn.addEventListener('click', ()=>{
+
+    console.log("clear botton clicked")
+    if(checkbox.textContent === '\u2714'){
+        checkbox.parentNode.parentNode.remove();
+
+    }
+    
+})
+
+// ----------------------end clear btn ----------------
 
 }
 // remove item function
 function removelist(target){
     
 if(target.classList.contains("del-btn")){
+   
+
 
     console.log('second hey')
 
@@ -197,11 +196,13 @@ if(storageAvailable('localStorage')){
     form.addEventListener("submit", function(e){
         e.preventDefault();
 
-       
-         const input = document.getElementById("todo").value;
+       const inputkey = document.getElementById("todo");
+         const input = inputkey.value;
         const anotherTask = addListTask(input);
         displayitems(anotherTask)
         saveStorage();
+
+        inputkey.value = " ";
         
         
     })
@@ -213,4 +214,49 @@ cont.addEventListener("click", function(e){
     removelist(e.target);
     removeStorage(e);
 })
+
+
+//  ------------------------------add edit -------------------------
+// div.addEventListener('click', function(e){
+// if(e.target.classList.contains('edit')){
+//     // console.log('it contains');
+//     // e.target.parentNode.parentNode.children[1].removeAttribute('readonly');
+//     let inputEdit = e.target.parentNode.parentNode.children[0].children[1];
+//     inputEdit.toggleAttribute('readonly') ;
+//     if (!inputEdit.hasAttribute('readonly')){
+//         e.target.innerHTML = "save";
+//     }
+//     else{
+//         e.target.innerHTML = "edit"
+
+//     }
+// }
+// })
+
+// -----------------------edd edit----------------------------------
+
+
+//  ------------------edit---------------
+// const inputID = document.getElementById(chores.idex);
+// inputID.addEventListener('keypress' ,(e)=>{
+//     e.preventDefault();
+//     if(e.code === 'Enter'){
+
+        
+//   const newDescription = e.target.value;
+//   const index = e.target.id;
+//   const todos = getListTask();
+
+//   const todoItem = todos.find((todo) => todo.index === index);
+//   todoItem.description = e.target.value;
+//   todos[index - 1] = todoItem;
+//   localStorage.setItem('listItem', JSON.stringify(todos))
+
+//     }
+ 
+    
+// })
+// -----------------------end edit tryout ---------------------
+
+// console.log(chores.completed = true );
 
