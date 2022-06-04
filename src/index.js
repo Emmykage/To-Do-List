@@ -57,13 +57,6 @@ function removeStorage(e){
     // console.log(listId);
 }
 
-const setTaskDescription = (taskId, newDescription) => {
-    const taskToUpdate = listarr.find(task => task.index === taskId);
-    taskToUpdate.description = newDescription;
-    }
-    
-// ----------------------end storage-----------------------
-
 
 function displayitems(chores){
     const div = document.createElement("div");
@@ -104,7 +97,7 @@ checkbox.addEventListener('click', function(e){
        divInput.classList.remove('crossinput');
        chores.completed = false;
        const localData = JSON.parse(localStorage.getItem('listItem'));
-       localData[chores.index].completed = false;
+       localData[chores.index -1].completed = false;
        localStorage.setItem('listItem', JSON.stringify(localData));
      
        console.log(chores.completed)
@@ -114,7 +107,7 @@ checkbox.addEventListener('click', function(e){
     divInput.classList.add('crossinput');
     chores.completed = true;
     const localData = JSON.parse(localStorage.getItem('listItem'));
-    localData[chores.index].completed = true;
+    localData[chores.index - 1].completed = true;
     localStorage.setItem('listItem', JSON.stringify(localData))
 
     console.log(chores.completed)
@@ -133,7 +126,7 @@ editBtn.addEventListener('click',()=>{
 
                     const localData = JSON.parse(localStorage.getItem('listItem'));
                     console.log(divInput.value, chores.index)
-                    localData[chores.index].description = divInput.value;
+                    localData[chores.index - 1].description = divInput.value;
                     localStorage.setItem('listItem', JSON.stringify(localData))
                     divInput.removeAttribute('readonly');
                 
@@ -269,3 +262,10 @@ cont.addEventListener("click", function(e){
 
 // console.log(chores.completed = true );
 
+
+// const setTaskDescription = (taskId, newDescription) => {
+//     const taskToUpdate = listarr.find(task => task.index === taskId);
+//     taskToUpdate.description = newDescription;
+//     }
+    
+// // ----------------------end storage-----------------------
