@@ -27,7 +27,7 @@ To clone this project:
 - Change directory into the project folder
 - Install dev dependencies
 - Open project with text editor to view changes
-- Run the code using [live server](https://www.google.com/search?client=safari&rls=en&q=live+server&ie=UTF-8&oe=UTF-8)
+- Run the code using [No Liveserver]
 
 ### Install
 - No Installation is required
