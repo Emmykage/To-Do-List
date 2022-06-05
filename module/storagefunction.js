@@ -29,6 +29,4 @@ export function removeStorage(e) {
   }
   localStorage.setItem('listItem', JSON.stringify(filteredList));
 
-  // saveTask(filteredList)
-  // console.log(listId);
 }
