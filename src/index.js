@@ -1,144 +1,126 @@
 /* eslint-disable */
 import '@fortawesome/fontawesome-free/js/all.js';
 import './style.css';
+import storageAvailable from '../module/storageAvailable.js';
+import {
+  listarr, getListTask, saveStorage, addListTask, removeStorage,
+} from '../module/storagefunction.js';
 
-// Check for availaible storage
-const storageAvailable = (type) => {
-    let storage;
-    try {
-      storage = window[type];
-      const x = '__storage_test__';
-      storage.setItem(x, x);
-      storage.removeItem(x);
-      return true;
-    } catch (e) {
-      return (
-        e instanceof DOMException
-        // everything except Firefox
-        && (e.code === 22
-          // Firefox
-          || e.code === 1014
-          // test name field too, because code might not be present
-          // everything except Firefox
-          || e.name === 'QuotaExceededError'
-          // Firefox
-          || e.name === 'NS_ERROR_DOM_QUOTA_REACHED')
-        // acknowledge QuotaExceededError only if there's something already stored
-        && storage
-        && storage.length !== 0
-      );
-    }
-  };
+export const cont = document.querySelector('.small-container');
+const clrBtn = document.querySelector('.clear');
 
-const form = document.querySelector("form");
-const cont = document.querySelector(".small-container");
-// const inputbtn =document.querySelector('.listItems');
-const inputfield = document.querySelector(".class-input");
+const form = document.querySelector('form');
 
-
-class ListToDo{
-    constructor(description=null, index = null,  completed = false){
-        this.description = description;
-        this.completed = completed;
-        this.index = index;
-
-    }
-}
-// replace with taskList
-let listarr = [];
-
-function getListTask(){
-     listarr = JSON.parse(localStorage.getItem('listItem')) || [];
-    return listarr;
-}
-function saveStorage(data = listarr){
-    localStorage.setItem('listItem', JSON.stringify(data))
-}
-function addListTask(description){
-    let listId = listarr.length + 1;
-    let newTask = new ListToDo(description, listId );
-    listarr.push(newTask);
-    console.log(description)
-    return newTask;
-}
-// function removeStorage(){
-//     getListTask();
-//     const listId = +e.target.id.slice(5);
-//     const filteredList = taskList.filter((task)=>task.index !==listId);
-//     for (let i = 0; i < filteredList.length; i +=1){
-//         filteredList[i].index = i +1
-//     }
-//     saveTask(filteredList)
-// }
-// ----------------------end storage-----------------------
-
-
-function displayitems(chores){
-    const div = document.createElement("div");
-div.innerHTML = `
+function displayitems(chores) {
+  const div = document.createElement('div');
+  div.innerHTML = `
 <div class ="checkclass">
-<input class= "checklist" type="checkbox" id="inputId${chores.index}">
-<input type="text" class="class-input" value="${chores.description}" readonly>
+<button class= "checkbox" id="check${chores.index}"></button>
+<input type="text" id="${chores.index}" class="class-input inputBox${chores.index}" value="${chores.description}" readonly>
 </div>
 <div>
-<button class="edit">edit</button><button class="del-btn"> del</button> <button class="fa-solid fa-ellipsis-vertical">del</button> </div>
+<button class="del-btn del-btn-${chores.index} del-display" id="trash-${chores.index}"><i  class="delIcon fa-solid fa-trash-can"></i></button>
+<span class="edit-btn editbtn${chores.index} "><i id="edit-id" class=" trashIcon fa-solid fa-ellipsis-vertical"></i></span>
+ </div>
 
 
 `;
+  div.classList.add('listItems');
+  cont.appendChild(div);
+  // -------------------------table buttons-------------------------
+  const editBtn = document.querySelector(`.editbtn${chores.index}`);
+  const divInput = document.querySelector(`.inputBox${chores.index}`);
+  const trashCan = document.querySelector(`.del-btn-${chores.index}`);
 
-div.classList.add("listItems");
-cont.appendChild(div);
- 
-div.addEventListener('click', function(e){
-if(e.target.classList.contains('edit')){
-    console.log('it contains');
-    // e.target.parentNode.parentNode.children[1].removeAttribute('readonly');
-    let inputEdit = e.target.parentNode.parentNode.children[0].children[1];
-    inputEdit.toggleAttribute('readonly') ;
-    if (!inputEdit.hasAttribute('readonly')){
-        e.target.innerHTML = "save";
+  const checkbox = document.querySelector(`#check${chores.index}`);
+  if (checkbox.textContent === '\u2714') {
+    checkbox.nextElementSibling.classList.add('crossinput');
+  }
+  checkbox.addEventListener('click', (e) => {
+    editBtn.classList.toggle('edit-display');
+    trashCan.classList.toggle('del-display');
+
+    if (e.target.textContent === '\u2714') {
+      e.target.textContent = ' ';
+      divInput.classList.remove('crossinput');
+      chores.completed = false;
+      const localData = JSON.parse(localStorage.getItem('listItem'));
+      localData[chores.index - 1].completed = false;
+      localStorage.setItem('listItem', JSON.stringify(localData));
+    } else {
+      e.target.textContent = '\u2714';
+      divInput.classList.add('crossinput');
+      chores.completed = true;
+      const localData = JSON.parse(localStorage.getItem('listItem'));
+      localData[chores.index - 1].completed = true;
+      localStorage.setItem('listItem', JSON.stringify(localData));
     }
-    else{
-        e.target.innerHTML = "edit"
+  });
+  editBtn.addEventListener('click', () => {
+    if (divInput.hasAttribute('readonly', true)) {
+      divInput.parentElement.parentElement.classList.add('activebg');
+      divInput.removeAttribute('readonly');
+      divInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          divInput.removeAttribute('readonly');
+          divInput.parentElement.parentElement.classList.remove('activebg');
 
+          const localData = JSON.parse(localStorage.getItem('listItem'));
+          // console.log(divInput.value, chores.index)
+          localData[chores.index - 1].description = divInput.value;
+          localStorage.setItem('listItem', JSON.stringify(localData));
+          divInput.removeAttribute('readonly');
+        }
+      });
+    } else {
+      divInput.setAttribute('readonly', true);
     }
-}
-})
+  });
 
+  // -------------------------clear btn-----------------
+
+  clrBtn.addEventListener('click', () => {
+    if (checkbox.textContent === '\u2714') {
+      checkbox.parentNode.parentNode.remove();
+    }
+    const localData = JSON.parse(localStorage.getItem('listItem'));
+    const deletedLocalData = localData.filter((item) => {
+      if (item.completed) {
+        return null;
+      }
+      return item;
+    });
+    localStorage.setItem('listItem', JSON.stringify(deletedLocalData));
+  });
+
+  // ----------------------end clear btn ----------------
 }
 // remove item function
-function removelist(target){
-if(target.classList.contains("del-btn")){
+function removelist(target) {
+  if (target.classList.contains('del-btn')) {
     target.parentNode.parentNode.remove();
-
-}
-// else if(target.classList.contains("edit"))
-// {   
-//     // inputfield.removeAttribute("readonly")
-//             console.log(document.className);
-//     }
-
+  }
 }
 // add item function/
-if(storageAvailable('localStorage')){
-    window.addEventListener('load', () =>{
-        getListTask();
-        listarr.forEach((task) =>displayitems(task))
+if (storageAvailable('localStorage')) {
+  window.addEventListener('load', () => {
+    getListTask();
+    listarr.forEach((task) => displayitems(task));
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-    })
-    form.addEventListener("submit", function(e){
-        e.preventDefault();
-        const input = document.getElementById("todo").value;
-        const anotherTask = addListTask(input);
-        displayitems(anotherTask)
-        saveStorage();
-    })
-    
+    const inputkey = document.getElementById('todo');
+    const input = inputkey.value;
+    const anotherTask = addListTask(input);
+    displayitems(anotherTask);
+    saveStorage();
+
+    inputkey.value = ' ';
+  });
 }
 
-
-cont.addEventListener("click", function(e){
-    removelist(e.target);
-    // console.log("delete");
-})
-
+cont.addEventListener('click', (e) => {
+  removelist(e.target);
+  removeStorage(e);
+});
