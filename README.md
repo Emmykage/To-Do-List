@@ -29,7 +29,8 @@ To clone this project:
 - Change directory into the project folder
 - Install dev dependencies
 - Open project with text editor to view changes
-- Run the code using [No Liveserver] https://emmykage.github.io/To-Do-List/
+- Run the code using [https://emmykage.github.io/To-Do-List/
+] https://emmykage.github.io/To-Do-List/
 
 
 ### Install
