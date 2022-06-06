@@ -1,17 +1,19 @@
 To-Do-List
 
-> This Website adds remove and updatests to-do-list
+> This Web App manages ToDo activities adds and  remove individual lists, update the list in the localstorage, edits the list according and checkouts out completed list of activities
 
 ## Built With
 
 - HTML
+- CSS
 - Javascrict
+- Webpack
 
 ## Getting Started
 
 To clone this project:
 - Go to github project repository
-- Click on the green button(known as code)
+- Click on the green button("code")
 - Copy the ssh link
 - on your local machine, type the command git clone link
 
@@ -27,13 +29,14 @@ To clone this project:
 - Change directory into the project folder
 - Install dev dependencies
 - Open project with text editor to view changes
-- Run the code using [No Liveserver]
+- Run the code using [No Liveserver] https://emmykage.github.io/To-Do-List/
+
 
 ### Install
 - No Installation is required
 
 ### Usage
-- Make changes to the index.html and index.js files then submit pull requests
+- enter Individual ToDo activty and enter to register your activity for the day
 
 ### Run tests
 - You can use a live server to run the tests
