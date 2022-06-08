@@ -1,12 +1,13 @@
 To-Do-List
 
-> This Web App manages ToDo activities adds and  remove individual lists, update the list in the localstorage, edits the list according and checkouts out completed list of activities
+"To-do list" is a tool that helps to organize your day This Web App manages your daily activities adds and  remove individual lists of activities, update the list in the localstorage, edits the list according and checkouts out completed list of activities
+
 
 ## Built With
 
 - HTML
 - CSS
-- Javascrict
+- Javascript ES6
 - Webpack
 
 ## Getting Started
